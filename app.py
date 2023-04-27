@@ -4,12 +4,12 @@ import os
 import aws_cdk as cdk
 
 import constants
-from backend.component import Backend
+from shorturl.component import ShortURL
 
 
 app = cdk.App()
 
-Backend(
+backend = ShortURL(
     app,
     constants.APP_NAME + "Sandbox",
     env=cdk.Environment(

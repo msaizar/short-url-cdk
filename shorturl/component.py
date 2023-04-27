@@ -1,5 +1,6 @@
-from backend.api.infrastructure import API
-from backend.database.infrastructure import Database
+from shorturl.api.infrastructure import API
+from shorturl.database.infrastructure import Database
+from shorturl.cdn.infrastructure import CDN
 
 from typing import Any
 
@@ -7,7 +8,7 @@ import aws_cdk as cdk
 from constructs import Construct
 
 
-class Backend(cdk.Stack):
+class ShortURL(cdk.Stack):
     def __init__(
         self,
         scope: Construct,
@@ -32,3 +33,11 @@ class Backend(cdk.Stack):
 
 
         database.dynamodb_table.grant_read_write_data(api.lambda_function)
+
+        api_gateway_endpoint = f'{api.api_gateway_http_api.http_api_id}.execute-api.{self.region}.amazonaws.com'
+
+        cdn = CDN(
+            self,
+            "CDN",
+            api_gateway_endpoint=api_gateway_endpoint,
+        )
