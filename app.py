@@ -17,7 +17,6 @@ Backend(
         region=os.environ["CDK_DEFAULT_REGION"],
     ),
     api_lambda_reserved_concurrency=1,
-    api_dynamodb_table_name='DYNAMODB_TABLE_NAME',
 )
 
 app.synth()
