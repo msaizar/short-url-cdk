@@ -1,7 +1,9 @@
 import aws_cdk.aws_cloudfront as cloudfront
 import aws_cdk.aws_cloudfront_origins as origins
 import aws_cdk.aws_certificatemanager as certificatemanager
+
 from constructs import Construct
+from aws_cdk.aws_s3 import IBucket
 
 import constants
 
@@ -13,6 +15,7 @@ class CDN(Construct):
         id_: str,
         *,
         api_gateway_endpoint: str,
+        frontend_bucket: IBucket,
         domain_name: str,
     ):
         super().__init__(scope, id_)
@@ -23,10 +26,23 @@ class CDN(Construct):
             self, "domainCert", constants.CERTIFICATE_ARN
         )
 
+        origin_access_identity = cloudfront.OriginAccessIdentity(
+            self,
+            "OriginAccessIdentity",
+        )
+
+        s3_origin = origins.S3Origin(
+            bucket=frontend_bucket, origin_access_identity=origin_access_identity
+        )
+
         self.distribution = cloudfront.Distribution(
             self,
             "Distribution",
             default_behavior=cloudfront.BehaviorOptions(origin=api_gateway_origin),
             domain_names=[domain_name],
             certificate=domain_cert,
+            default_root_object="index.html",
         )
+
+        self.distribution.add_behavior(path_pattern="/index.html", origin=s3_origin)
+        self.distribution.add_behavior(path_pattern="/static/*", origin=s3_origin)

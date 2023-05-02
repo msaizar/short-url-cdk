@@ -2,6 +2,8 @@ from shorturl.api.infrastructure import API
 from shorturl.database.infrastructure import Database
 from shorturl.cdn.infrastructure import CDN
 from shorturl.dns.infrastructure import DNS
+from shorturl.frontend.infrastructure import Frontend
+
 
 from typing import Any
 
@@ -38,10 +40,16 @@ class ShortURL(cdk.Stack):
 
         api_gateway_endpoint = f"{api.api_gateway_http_api.http_api_id}.execute-api.{self.region}.amazonaws.com"
 
+        frontend = Frontend(
+            self,
+            "Frontend",
+        )
+
         cdn = CDN(
             self,
             "CDN",
             api_gateway_endpoint=api_gateway_endpoint,
+            frontend_bucket=frontend.frontend_bucket,
             domain_name=f"short-api.{constants.HOSTED_ZONE_NAME}",
         )
 
