@@ -1,11 +1,14 @@
 from shorturl.api.infrastructure import API
 from shorturl.database.infrastructure import Database
 from shorturl.cdn.infrastructure import CDN
+from shorturl.dns.infrastructure import DNS
 
 from typing import Any
 
 import aws_cdk as cdk
 from constructs import Construct
+
+import constants
 
 
 class ShortURL(cdk.Stack):
@@ -40,4 +43,12 @@ class ShortURL(cdk.Stack):
             self,
             "CDN",
             api_gateway_endpoint=api_gateway_endpoint,
+            domain_name=f'short-api.{constants.HOSTED_ZONE_NAME}',
+        )
+
+        dns = DNS(
+            self,
+            "DNS",
+            hosted_zone_name=constants.HOSTED_ZONE_NAME,
+            distribution=cdn.distribution,
         )
