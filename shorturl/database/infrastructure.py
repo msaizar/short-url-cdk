@@ -11,18 +11,17 @@ class Database(Construct):
         id_: str,
         **kwargs,
     ):
+        super().__init__(scope, id_)
 
-	    super().__init__(scope, id_)
+        partition_key = dynamodb.Attribute(
+            name="ShortURL",
+            type=dynamodb.AttributeType.STRING,
+        )
 
-	    partition_key = dynamodb.Attribute(
-	    	name="ShortURL", 
-	    	type=dynamodb.AttributeType.STRING,
-	    )
-
-	    self.dynamodb_table = dynamodb.Table(
-	    	self, 
-	    	"Table",
-	    	partition_key=partition_key, 
-	    	billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
-	    	removal_policy=RemovalPolicy.DESTROY,
-	    )
+        self.dynamodb_table = dynamodb.Table(
+            self,
+            "Table",
+            partition_key=partition_key,
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+            removal_policy=RemovalPolicy.DESTROY,
+        )

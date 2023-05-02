@@ -34,16 +34,15 @@ class ShortURL(cdk.Stack):
             lambda_reserved_concurrency=api_lambda_reserved_concurrency,
         )
 
-
         database.dynamodb_table.grant_read_write_data(api.lambda_function)
 
-        api_gateway_endpoint = f'{api.api_gateway_http_api.http_api_id}.execute-api.{self.region}.amazonaws.com'
+        api_gateway_endpoint = f"{api.api_gateway_http_api.http_api_id}.execute-api.{self.region}.amazonaws.com"
 
         cdn = CDN(
             self,
             "CDN",
             api_gateway_endpoint=api_gateway_endpoint,
-            domain_name=f'short-api.{constants.HOSTED_ZONE_NAME}',
+            domain_name=f"short-api.{constants.HOSTED_ZONE_NAME}",
         )
 
         dns = DNS(
