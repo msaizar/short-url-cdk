@@ -4,10 +4,11 @@ from shorturl.cdn.infrastructure import CDN
 from shorturl.dns.infrastructure import DNS
 from shorturl.frontend.infrastructure import Frontend
 
-
 from typing import Any
+import pathlib
 
 import aws_cdk as cdk
+import aws_cdk.aws_s3_deployment as s3_deployment
 from constructs import Construct
 
 import constants
@@ -51,6 +52,23 @@ class ShortURL(cdk.Stack):
             api_gateway_endpoint=api_gateway_endpoint,
             frontend_bucket=frontend.frontend_bucket,
             domain_name=f"short-api.{constants.HOSTED_ZONE_NAME}",
+        )
+
+        s3_deployment.BucketDeployment(
+            self,
+            "DeployFrontend",
+            sources=[
+                s3_deployment.Source.asset(
+                    str(
+                        pathlib.Path(__file__)
+                        .parent.joinpath("frontend/assets")
+                        .resolve()
+                    )
+                )
+            ],
+            destination_bucket=frontend.frontend_bucket,
+            distribution=cdn.distribution,
+            distribution_paths=["/index.html", "/static/*"],
         )
 
         dns = DNS(
