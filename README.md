@@ -1,7 +1,13 @@
 
-# Welcome to your CDK Python project!
+# Welcome to the ShortURL project
 
-This is a blank project for CDK development with Python.
+## About
+
+This is a work in progress to try out different AWS services.  The idea is to write a fully functional URL shortener. To make this work you'll need to modify `constants.py` and set up `HOSTED_ZONE_NAME` and `CERTIFICATE_ARN`. When deployed we'll create short-api.`HOSTED_ZONE_NAME` and use the certificate at `CERTIFICATE_ARN`. To install you can follow the instructions below, and to deploy you'll need to run `cdk bootstrap` the first time. After that you can deploy with `cdk deploy`.
+
+![Infrastructure](/images/diagram.png)
+
+## Installation
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
@@ -14,32 +20,32 @@ you can create the virtualenv manually.
 
 To manually create a virtualenv on MacOS and Linux:
 
-```
+```sh
 $ python3 -m venv .venv
 ```
 
 After the init process completes and the virtualenv is created, you can use the following
 step to activate your virtualenv.
 
-```
+```sh
 $ source .venv/bin/activate
 ```
 
 If you are a Windows platform, you would activate the virtualenv like this:
 
-```
+```sh
 % .venv\Scripts\activate.bat
 ```
 
 Once the virtualenv is activated, you can install the required dependencies.
 
-```
+```sh
 $ pip install -r requirements.txt
 ```
 
 At this point you can now synthesize the CloudFormation template for this code.
 
-```
+```sh
 $ cdk synth
 ```
 
@@ -49,10 +55,16 @@ command.
 
 ## Useful commands
 
- * `cdk ls`          list all stacks in the app
- * `cdk synth`       emits the synthesized CloudFormation template
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk docs`        open CDK documentation
+* `cdk ls`          list all stacks in the app
+* `cdk synth`       emits the synthesized CloudFormation template
+* `cdk deploy`      deploy this stack to your default AWS account/region
+* `cdk diff`        compare deployed stack with current state
+* `cdk docs`        open CDK documentation
 
 Enjoy!
+
+## TODO
+
+* Working backend code
+* Working frontend code
+* Split backend code and frontend code to two different repositories with CI/CD
