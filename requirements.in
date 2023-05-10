@@ -1,4 +1,5 @@
 aws-cdk-lib
 aws-cdk.aws-apigatewayv2-alpha
 aws-cdk.aws-apigatewayv2-integrations-alpha
+black
 constructs

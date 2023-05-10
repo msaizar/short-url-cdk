@@ -65,6 +65,10 @@ Enjoy!
 
 ## TODO
 
-* Working backend code
-* Working frontend code
+* Improve caching
+* Handle dangling resources
+* Don't overwrite in dynamodb, create new short URL instead
+* Parse error messages.
+* Production and staging environments
+* Backend tests
 * Split backend code and frontend code to two different repositories with CI/CD

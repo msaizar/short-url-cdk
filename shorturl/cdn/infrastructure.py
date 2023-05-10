@@ -38,7 +38,10 @@ class CDN(Construct):
         self.distribution = cloudfront.Distribution(
             self,
             "Distribution",
-            default_behavior=cloudfront.BehaviorOptions(origin=api_gateway_origin),
+            default_behavior=cloudfront.BehaviorOptions(
+                origin=api_gateway_origin,
+                allowed_methods=cloudfront.AllowedMethods.ALLOW_ALL,
+            ),
             domain_names=[domain_name],
             certificate=domain_cert,
             default_root_object="index.html",

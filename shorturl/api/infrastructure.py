@@ -24,7 +24,7 @@ class API(Construct):
             code=lambda_.Code.from_asset(
                 str(pathlib.Path(__file__).parent.joinpath("runtime").resolve())
             ),
-            runtime=lambda_.Runtime.PYTHON_3_9,
+            runtime=lambda_.Runtime.PYTHON_3_8,
             environment={"DYNAMODB_TABLE_NAME": dynamodb_table_name},
             reserved_concurrent_executions=lambda_reserved_concurrency,
             handler="index.handler",
