@@ -51,7 +51,7 @@ class ShortURL(cdk.Stack):
             "CDN",
             api_gateway_endpoint=api_gateway_endpoint,
             frontend_bucket=frontend.frontend_bucket,
-            domain_name=f"short-api.{constants.HOSTED_ZONE_NAME}",
+            domain_name=f"{constants.SUBDOMAIN}.{constants.HOSTED_ZONE_NAME}",
         )
 
         s3_deployment.BucketDeployment(
@@ -74,6 +74,5 @@ class ShortURL(cdk.Stack):
         dns = DNS(
             self,
             "DNS",
-            hosted_zone_name=constants.HOSTED_ZONE_NAME,
             distribution=cdn.distribution,
         )
