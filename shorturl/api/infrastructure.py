@@ -4,6 +4,7 @@ import aws_cdk.aws_apigatewayv2_alpha as apigatewayv2_alpha
 import aws_cdk.aws_apigatewayv2_integrations_alpha as apigatewayv2_integrations_alpha
 import aws_cdk.aws_lambda as lambda_
 
+from aws_cdk import Duration
 from constructs import Construct
 
 
@@ -28,6 +29,7 @@ class API(Construct):
             environment={"DYNAMODB_TABLE_NAME": dynamodb_table_name},
             reserved_concurrent_executions=lambda_reserved_concurrency,
             handler="index.handler",
+            timeout=Duration.seconds(1),
         )
 
         api_gateway_http_lambda_integration = (

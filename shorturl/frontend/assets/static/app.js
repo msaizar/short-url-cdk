@@ -28,32 +28,33 @@
             })
               .then((response) => response.json())
               .then((json_response) => {
-                console.log(json_response);
+                error_alert_box.classList.add("d-none");
+                success_alert_box.classList.add("d-none");
 
                 if (json_response.success == true) {
                   let a = document.getElementById("success_message");
                   a.href = "/" + json_response.message.short_url;
-                  error_alert_box.classList.add("d-none");
                   success_alert_box.classList.remove("d-none");
                 } else {
                   let span = document.getElementById("error_message");
                   span.innerText = json_response.message;
-                  success_alert_box.classList.add("d-none");
                   error_alert_box.classList.remove("d-none");
                 }
               })
               .catch((error) => {
                 let span = document.getElementById("error_message");
-                span.innerText = "Unexpected error contacting backend.";
+                error_alert_box.classList.add("d-none");
                 success_alert_box.classList.add("d-none");
+                span.innerText = "Unexpected error contacting backend.";
                 error_alert_box.classList.remove("d-none");
               });
           } catch (e) {
             event.preventDefault();
             event.stopPropagation();
             let span = document.getElementById("error_message");
-            span.innerText = "Unexpected error contacting backend.";
+            error_alert_box.classList.add("d-none");
             success_alert_box.classList.add("d-none");
+            span.innerText = "Unexpected error contacting backend.";
             error_alert_box.classList.remove("d-none");
           }
         }
