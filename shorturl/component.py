@@ -11,8 +11,6 @@ import aws_cdk as cdk
 import aws_cdk.aws_s3_deployment as s3_deployment
 from constructs import Construct
 
-import constants
-
 
 class ShortURL(cdk.Stack):
     def __init__(
@@ -21,6 +19,10 @@ class ShortURL(cdk.Stack):
         id_: str,
         *,
         api_lambda_reserved_concurrency: int,
+        subdomain: str,
+        hosted_zone_name: str,
+        certificate_arn: str,
+        removal_policy: str,
         **kwargs: Any,
     ):
         super().__init__(scope, id_, **kwargs)
@@ -28,6 +30,7 @@ class ShortURL(cdk.Stack):
         database = Database(
             self,
             "Database",
+            removal_policy=removal_policy,
         )
 
         api = API(
@@ -44,6 +47,7 @@ class ShortURL(cdk.Stack):
         frontend = Frontend(
             self,
             "Frontend",
+            removal_policy=removal_policy,
         )
 
         cdn = CDN(
@@ -51,7 +55,8 @@ class ShortURL(cdk.Stack):
             "CDN",
             api_gateway_endpoint=api_gateway_endpoint,
             frontend_bucket=frontend.frontend_bucket,
-            domain_name=f"{constants.SUBDOMAIN}.{constants.HOSTED_ZONE_NAME}",
+            domain_name=f"{subdomain}.{hosted_zone_name}",
+            certificate_arn=certificate_arn,
         )
 
         s3_deployment.BucketDeployment(
@@ -75,4 +80,6 @@ class ShortURL(cdk.Stack):
             self,
             "DNS",
             distribution=cdn.distribution,
+            subdomain=subdomain,
+            hosted_zone_name=hosted_zone_name,
         )

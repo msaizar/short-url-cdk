@@ -5,8 +5,6 @@ import aws_cdk.aws_certificatemanager as certificatemanager
 from constructs import Construct
 from aws_cdk.aws_s3 import IBucket
 
-import constants
-
 
 class CDN(Construct):
     def __init__(
@@ -17,13 +15,14 @@ class CDN(Construct):
         api_gateway_endpoint: str,
         frontend_bucket: IBucket,
         domain_name: str,
+        certificate_arn: str,
     ):
         super().__init__(scope, id_)
 
         api_gateway_origin = origins.HttpOrigin(api_gateway_endpoint)
 
         domain_cert = certificatemanager.Certificate.from_certificate_arn(
-            self, "domainCert", constants.CERTIFICATE_ARN
+            self, "domainCert", certificate_arn
         )
 
         origin_access_identity = cloudfront.OriginAccessIdentity(
