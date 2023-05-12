@@ -65,9 +65,9 @@ Enjoy!
 
 ## TODO
 
+* Add CI/CD repo, CI/CD account
 * Log retention
 * Backups
 * Don't overwrite in dynamodb, create new short URL instead
 * Parse error messages.
 * Backend tests
-* Split backend code and frontend code to two different repositories with CI/CD
