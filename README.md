@@ -3,7 +3,7 @@
 
 ## About
 
-This is a work in progress to try out different AWS services.  The idea is to write a fully functional URL shortener. To make this work you'll need to modify `constants.py` and set up `HOSTED_ZONE_NAME` and `CERTIFICATE_ARN`. When deployed we'll create `SUBDOMAIN`.`HOSTED_ZONE_NAME` and use the certificate at `CERTIFICATE_ARN`. To install you can follow the instructions below, and to deploy you'll need to run `cdk bootstrap` the first time. After that you can deploy with `cdk deploy`.
+This is a work in progress to try out different AWS services.  The idea is to write a fully functional URL shortener. To make this work you'll need to modify `constants.py` and set up `HOSTED_ZONE_NAME`. Each stack located at `app.py` should have its own `hosted_zone_name`, and each stack should be in its own account, with an already existing hosted zone. To install you can follow the instructions below, and to deploy you'll need to run `cdk bootstrap` the first time. After that you can deploy with `cdk deploy <STACK_NAME>`. Since we're relying on pre existing hosted zones, we'll need to specify the stack name in commands like `cdk synth` along with the profile. For example, `cdk synth ShortURL-Production --profile ShortURL-Production`.
 
 ![Infrastructure](/images/diagram.png)
 

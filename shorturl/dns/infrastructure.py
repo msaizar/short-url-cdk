@@ -1,5 +1,6 @@
 import aws_cdk.aws_route53 as route53
 import aws_cdk.aws_route53_targets as route53_targets
+import aws_cdk.aws_certificatemanager as acm
 
 from aws_cdk.aws_cloudfront import IDistribution
 from constructs import Construct
@@ -12,7 +13,6 @@ class DNS(Construct):
         id_: str,
         *,
         distribution: IDistribution,
-        subdomain: str,
         hosted_zone_name: str,
     ):
         super().__init__(scope, id_)
@@ -28,5 +28,4 @@ class DNS(Construct):
             target=route53.RecordTarget.from_alias(
                 route53_targets.CloudFrontTarget(distribution)
             ),
-            record_name=f"{subdomain}.{hosted_zone_name}",
         )

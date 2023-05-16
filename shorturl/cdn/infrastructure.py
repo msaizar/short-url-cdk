@@ -1,6 +1,7 @@
 import aws_cdk.aws_cloudfront as cloudfront
 import aws_cdk.aws_cloudfront_origins as origins
-import aws_cdk.aws_certificatemanager as certificatemanager
+import aws_cdk.aws_certificatemanager as acm
+import aws_cdk.aws_route53 as route53
 
 from constructs import Construct
 from aws_cdk.aws_s3 import IBucket
@@ -14,15 +15,21 @@ class CDN(Construct):
         *,
         api_gateway_endpoint: str,
         frontend_bucket: IBucket,
-        domain_name: str,
-        certificate_arn: str,
+        hosted_zone_name: str,
     ):
         super().__init__(scope, id_)
 
         api_gateway_origin = origins.HttpOrigin(api_gateway_endpoint)
 
-        domain_cert = certificatemanager.Certificate.from_certificate_arn(
-            self, "domainCert", certificate_arn
+        hosted_zone = route53.HostedZone.from_lookup(
+            self, "MyZone", domain_name=hosted_zone_name
+        )
+
+        domain_cert = acm.Certificate(
+            self,
+            "Certificate",
+            domain_name=hosted_zone_name,
+            validation=acm.CertificateValidation.from_dns(hosted_zone),
         )
 
         origin_access_identity = cloudfront.OriginAccessIdentity(
@@ -41,7 +48,7 @@ class CDN(Construct):
                 origin=api_gateway_origin,
                 allowed_methods=cloudfront.AllowedMethods.ALLOW_ALL,
             ),
-            domain_names=[domain_name],
+            domain_names=[hosted_zone_name],
             certificate=domain_cert,
             default_root_object="index.html",
         )

@@ -2,5 +2,17 @@
   "hosted-zone:account=233042155385:domainName=msaizar.com:region=us-east-1": {
     "Id": "/hostedzone/ZYGVRZJQVCX5C",
     "Name": "msaizar.com."
+  },
+  "hosted-zone:account=463267452836:domainName=shortr.org:region=us-east-1": {
+    "Id": "/hostedzone/Z0664563K7NOMXWDFMY5",
+    "Name": "shortr.org."
+  },
+  "hosted-zone:account=233042155385:domainName=staging.shortr.org:region=us-east-1": {
+    "Id": "/hostedzone/Z007694523N3G3J00RXI3",
+    "Name": "staging.shortr.org."
+  },
+  "hosted-zone:account=233042155385:domainName=shortr.org:region=us-east-1": {
+    "Id": "/hostedzone/Z10160672QHVDPCXDIKBV",
+    "Name": "shortr.org."
   }
 }
