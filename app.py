@@ -10,17 +10,6 @@ from shorturl.component import ShortURL
 
 app = cdk.App()
 
-mikes_sandbox = ShortURL(
-    app,
-    constants.APP_NAME + "MikeSandbox",
-    env=cdk.Environment(
-        account=os.environ["CDK_DEFAULT_ACCOUNT"],
-        region=os.environ["CDK_DEFAULT_REGION"],
-    ),
-    api_lambda_reserved_concurrency=1,
-    hosted_zone_name=f"mike.sandbox.{constants.HOSTED_ZONE_NAME}",
-    removal_policy=RemovalPolicy.DESTROY,
-)
 
 staging = ShortURL(
     app,
