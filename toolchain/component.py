@@ -14,7 +14,7 @@ from shorturl.component import ShortURL
 GITHUB_CONNECTION_ARN = os.environ["GITHUB_CONNECTION_ARN"]
 GITHUB_OWNER = "msaizar"
 GITHUB_REPO = "short-url-cdk"
-GITHUB_TRUNK_BRANCH = "main"
+GITHUB_TRUNK_BRANCH = "toolchain"
 PRODUCTION_ENV_NAME = "Production"
 PRODUCTION_ENV_ACCOUNT = os.environ["PRODUCTION_ACCOUNT"]
 PRODUCTION_ENV_REGION = "us-east-1"
