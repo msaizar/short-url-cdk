@@ -22,7 +22,7 @@ mikes_sandbox = ShortURL(
     removal_policy=RemovalPolicy.DESTROY,
 )
 
-sandbox = ShortURL(
+staging = ShortURL(
     app,
     constants.APP_NAME + "Staging",
     env=cdk.Environment(
