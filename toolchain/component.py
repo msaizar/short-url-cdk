@@ -29,7 +29,7 @@ class Toolchain(cdk.Stack):
             GITHUB_TRUNK_BRANCH,
             connection_arn=GITHUB_CONNECTION_ARN,
         )
-        build_spec = {"phases": {"install": {"runtime-versions": {"python": "3.7"}}}}
+        build_spec = {"phases": {"install": {"runtime-versions": {"python": "3.10"}}}}
         synth = pipelines.CodeBuildStep(
             "Synth",
             input=source,
