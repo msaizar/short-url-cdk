@@ -3,7 +3,21 @@
 
 ## About
 
-This is a work in progress to try out different AWS services.  The idea is to write a fully functional URL shortener. To make this work you'll need to modify `constants.py` and set up `HOSTED_ZONE_NAME`. Each stack located at `app.py` should have its own `hosted_zone_name`, and each stack should be in its own account, with an already existing hosted zone. To install you can follow the instructions below, and to deploy you'll need to run `cdk bootstrap` the first time. After that you can deploy with `cdk deploy <STACK_NAME>`. Since we're relying on pre existing hosted zones, we'll need to specify the stack name in commands like `cdk synth` along with the profile. For example, `cdk synth ShortURLProduction --profile ShortURL-Production`.
+This is a work in progress to try out different AWS services.  The idea is to write a fully functional URL shortener. To make this work you'll need to modify `constants.py` and set up `HOSTED_ZONE_NAME`. Each stack located at `app.py` should have its own `hosted_zone_name`, and each stack should be in its own account, with an already existing hosted zone. You'll also need to set up the variables in `toolchain/component.py`. To install you can follow the installation instructions below.
+
+### Deploying to a production account with a different CI CD account
+
+`cdk bootstrap aws://<CI CD Account ID>/us-east-1 --profile ShortURL-CICD`
+
+`cdk bootstrap --trust <CI CD Account ID> --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess  aws://<PRODUCTION Account ID>/us-east-1 --profile ShortURL-Production`
+
+`cdk deploy ShortURLToolchain --profile ShortURL-CICD`
+
+### Deploying to a staging environment
+
+`cdk bootstrap aws://Staging Account ID>/us-east-1 --profile ShortURL-Staging`
+
+`cdk deploy ShortURLStaging --profile ShortURL-Staging`
 
 ![Infrastructure](/images/diagram.png)
 
@@ -65,7 +79,6 @@ Enjoy!
 
 ## TODO
 
-* Add CI/CD repo, CI/CD account
 * Log retention
 * Backups
 * Don't overwrite in dynamodb, create new short URL instead
