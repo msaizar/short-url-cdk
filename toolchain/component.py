@@ -34,7 +34,7 @@ class Toolchain(cdk.Stack):
             input=source,
             partial_build_spec=codebuild.BuildSpec.from_object(build_spec),
             install_commands=["./scripts/install-deps.sh"],
-            commands=["npx cdk synth"],
+            commands=["npx cdk synth ShortURLProduction"],
             primary_output_directory="cdk.out",
         )
         pipeline = pipelines.CodePipeline(
