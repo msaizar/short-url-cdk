@@ -28,7 +28,7 @@ toolchain = Toolchain(
     app,
     constants.APP_NAME + "Toolchain",
     env=cdk.Environment(
-        account=os.environ["CICD_ACCOUNT"],
+        account="642365414278",
         region="us-east-1",
     ),
 )

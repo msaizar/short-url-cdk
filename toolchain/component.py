@@ -1,4 +1,3 @@
-import os
 from typing import Any
 
 import aws_cdk as cdk
@@ -11,12 +10,12 @@ import constants
 from shorturl.component import ShortURL
 
 
-GITHUB_CONNECTION_ARN = os.environ["GITHUB_CONNECTION_ARN"]
+GITHUB_CONNECTION_ARN = "arn:aws:codestar-connections:us-east-1:642365414278:connection/88c1a1b3-3f2e-4a8d-9aa0-f6d3aaa47f16"
 GITHUB_OWNER = "msaizar"
 GITHUB_REPO = "short-url-cdk"
 GITHUB_TRUNK_BRANCH = "toolchain"
 PRODUCTION_ENV_NAME = "Production"
-PRODUCTION_ENV_ACCOUNT = os.environ["PRODUCTION_ACCOUNT"]
+PRODUCTION_ENV_ACCOUNT = "463267452836"
 PRODUCTION_ENV_REGION = "us-east-1"
 
 
