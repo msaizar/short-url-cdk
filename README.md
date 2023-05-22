@@ -3,13 +3,13 @@
 
 ## About
 
-This is a work in progress to try out different AWS services.  The idea is to write a fully functional URL shortener. To make this work you'll need to modify `constants.py` and set up `HOSTED_ZONE_NAME`. Each stack located at `app.py` should have its own `hosted_zone_name`, and each stack should be in its own account, with an already existing hosted zone. You'll also need to set up the variables in `toolchain/component.py`. To install you can follow the installation instructions below.
+This is a work in progress to try out different AWS services.  The idea is to write a fully functional URL shortener. To make this work you'll need to modify the variables found at `app.py` and `toolchain/component.py`. Each stack located at `app.py` should have its own `hosted_zone_id` and `zone_name`, and each stack should be in its own account, with an already existing hosted zone. To install you can follow the installation instructions below.
 
 ### Deploying to a production account with a different CI CD account
 
-`cdk bootstrap aws://<CI CD Account ID>/us-east-1 --profile ShortURL-CICD`
-
 `cdk bootstrap --trust <CI CD Account ID> --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess  aws://<PRODUCTION Account ID>/us-east-1 --profile ShortURL-Production`
+
+`cdk bootstrap aws://<CI CD Account ID>/us-east-1 --profile ShortURL-CICD`
 
 `cdk deploy ShortURLToolchain --profile ShortURL-CICD`
 
