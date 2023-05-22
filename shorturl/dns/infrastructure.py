@@ -13,12 +13,13 @@ class DNS(Construct):
         id_: str,
         *,
         distribution: IDistribution,
-        hosted_zone_name: str,
+        hosted_zone_id: str,
+        zone_name: str,
     ):
         super().__init__(scope, id_)
 
-        hosted_zone = route53.HostedZone.from_lookup(
-            self, "MyZone", domain_name=hosted_zone_name
+        hosted_zone = route53.HostedZone.from_hosted_zone_attributes(
+            self, "MyZone", hosted_zone_id=hosted_zone_id, zone_name=zone_name
         )
 
         route53.ARecord(

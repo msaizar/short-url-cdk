@@ -11,6 +11,8 @@ from toolchain.component import Toolchain
 
 app = cdk.App()
 
+HOSTED_ZONE_ID = "Z07660041MXSMFM5F1KCM"
+ZONE_NAME = "staging.shortr.org"
 
 staging = ShortURL(
     app,
@@ -20,7 +22,8 @@ staging = ShortURL(
         region=os.environ["CDK_DEFAULT_REGION"],
     ),
     api_lambda_reserved_concurrency=1,
-    hosted_zone_name=f"staging.{constants.HOSTED_ZONE_NAME}",
+    zone_name=ZONE_NAME,
+    hosted_zone_id=HOSTED_ZONE_ID,
     removal_policy=RemovalPolicy.DESTROY,
 )
 

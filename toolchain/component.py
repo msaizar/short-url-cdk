@@ -17,6 +17,8 @@ GITHUB_TRUNK_BRANCH = "main"
 PRODUCTION_ENV_NAME = "Production"
 PRODUCTION_ENV_ACCOUNT = "463267452836"
 PRODUCTION_ENV_REGION = "us-east-1"
+HOSTED_ZONE_ID = "Z09406111GDOY2XRRN5V8"
+ZONE_NAME = "shortr.org"
 
 
 class Toolchain(cdk.Stack):
@@ -61,7 +63,8 @@ class Toolchain(cdk.Stack):
             constants.APP_NAME + PRODUCTION_ENV_NAME,
             stack_name=constants.APP_NAME + PRODUCTION_ENV_NAME,
             api_lambda_reserved_concurrency=1,
-            hosted_zone_name=constants.HOSTED_ZONE_NAME,
+            zone_name=ZONE_NAME,
+            hosted_zone_id=HOSTED_ZONE_ID,
             removal_policy=RemovalPolicy.RETAIN,
         )
 

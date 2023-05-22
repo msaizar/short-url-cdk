@@ -19,7 +19,8 @@ class ShortURL(cdk.Stack):
         id_: str,
         *,
         api_lambda_reserved_concurrency: int,
-        hosted_zone_name: str,
+        zone_name: str,
+        hosted_zone_id: str,
         removal_policy: str,
         **kwargs: Any,
     ):
@@ -53,7 +54,8 @@ class ShortURL(cdk.Stack):
             "CDN",
             api_gateway_endpoint=api_gateway_endpoint,
             frontend_bucket=frontend.frontend_bucket,
-            hosted_zone_name=hosted_zone_name,
+            hosted_zone_id=hosted_zone_id,
+            zone_name=zone_name,
         )
 
         s3_deployment.BucketDeployment(
@@ -73,9 +75,10 @@ class ShortURL(cdk.Stack):
             distribution_paths=["/index.html", "/static/*"],
         )
 
-        dns = DNS(
+        DNS(
             self,
             "DNS",
             distribution=cdn.distribution,
-            hosted_zone_name=hosted_zone_name,
+            hosted_zone_id=hosted_zone_id,
+            zone_name=zone_name,
         )

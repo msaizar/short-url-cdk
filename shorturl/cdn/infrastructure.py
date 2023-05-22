@@ -15,20 +15,24 @@ class CDN(Construct):
         *,
         api_gateway_endpoint: str,
         frontend_bucket: IBucket,
-        hosted_zone_name: str,
+        hosted_zone_id: str,
+        zone_name: str,
     ):
         super().__init__(scope, id_)
 
         api_gateway_origin = origins.HttpOrigin(api_gateway_endpoint)
 
-        hosted_zone = route53.HostedZone.from_lookup(
-            self, "MyZone", domain_name=hosted_zone_name
+        hosted_zone = route53.HostedZone.from_hosted_zone_attributes(
+            self,
+            "MyZone",
+            hosted_zone_id=hosted_zone_id,
+            zone_name=zone_name,
         )
 
         domain_cert = acm.Certificate(
             self,
             "Certificate",
-            domain_name=hosted_zone_name,
+            domain_name=zone_name,
             validation=acm.CertificateValidation.from_dns(hosted_zone),
         )
 
@@ -48,7 +52,7 @@ class CDN(Construct):
                 origin=api_gateway_origin,
                 allowed_methods=cloudfront.AllowedMethods.ALLOW_ALL,
             ),
-            domain_names=[hosted_zone_name],
+            domain_names=[zone_name],
             certificate=domain_cert,
             default_root_object="index.html",
         )
