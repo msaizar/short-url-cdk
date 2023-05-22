@@ -6,6 +6,7 @@ from aws_cdk import RemovalPolicy
 
 import constants
 from shorturl.component import ShortURL
+from toolchain.component import Toolchain
 
 
 app = cdk.App()
@@ -23,17 +24,13 @@ staging = ShortURL(
     removal_policy=RemovalPolicy.DESTROY,
 )
 
-production = ShortURL(
+toolchain = Toolchain(
     app,
-    constants.APP_NAME + "Production",
+    constants.APP_NAME + "Toolchain",
     env=cdk.Environment(
-        account=os.environ["CDK_DEFAULT_ACCOUNT"],
-        region=os.environ["CDK_DEFAULT_REGION"],
+        account="642365414278",
+        region="us-east-1",
     ),
-    api_lambda_reserved_concurrency=1,
-    hosted_zone_name=constants.HOSTED_ZONE_NAME,
-    removal_policy=RemovalPolicy.RETAIN,
 )
-
 
 app.synth()
