@@ -4,24 +4,49 @@ import os
 import random
 import string
 
+from functools import lru_cache
+
 
 client = boto3.client("dynamodb")
 
 
+@lru_cache(maxsize=10)
+def read_short_url(raw_path):
+    data = client.get_item(
+        TableName=os.getenv("DYNAMODB_TABLE_NAME"),
+        Key={"ShortURL": {"S": raw_path}},
+    )
+    if "Item" in data:
+        return data["Item"]["FullURL"]["S"]
+    else:
+        return None
+
+
+@lru_cache(maxsize=10000)
+def write_short_url(long_url):
+    # Create ShortURL
+    short_url = "".join(random.choices(string.ascii_letters, k=4))
+    # Save to DynamoDB
+    client.put_item(
+        TableName=os.getenv("DYNAMODB_TABLE_NAME"),
+        Item={"ShortURL": {"S": short_url}, "FullURL": {"S": long_url}},
+    )
+
+    message = {"short_url": short_url}
+    return message
+
+
 def handler(event, context):
-    data = {}
+    # Redirect to main page by default
     response = {
         "headers": {"Location": "/"},
         "statusCode": 301,
     }
 
     if event["requestContext"]["http"]["method"] == "GET":
-        data = client.get_item(
-            TableName=os.getenv("DYNAMODB_TABLE_NAME"),
-            Key={"ShortURL": {"S": event["rawPath"][1:]}},
-        )
-        if "Item" in data:
-            response["headers"] = {"Location": data["Item"]["FullURL"]["S"]}
+        short_url = read_short_url(event["rawPath"][1:])
+        if short_url:
+            response["headers"] = {"Location": short_url}
 
     elif (
         event["requestContext"]["http"]["method"] == "POST"
@@ -30,19 +55,9 @@ def handler(event, context):
         success = True
         body = json.loads(event["body"])
         if "long_url" in body:
-            long_url = body["long_url"]
-            # Create ShortURL
-            short_url = "".join(random.choices(string.ascii_letters, k=4))
-            # Save to DynamoDB
-            data = client.put_item(
-                TableName=os.getenv("DYNAMODB_TABLE_NAME"),
-                Item={"ShortURL": {"S": short_url}, "FullURL": {"S": long_url}},
-            )
-
-            message = {"short_url": short_url}
+            message = write_short_url(body["long_url"])
         else:
-            success = False
-            message = "Missing body"
+            success, message = False, "Missing body"
 
         response = {
             "statusCode": 200,
