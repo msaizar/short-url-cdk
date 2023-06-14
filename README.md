@@ -79,6 +79,5 @@ Enjoy!
 
 ## TODO
 
-* Don't overwrite in dynamodb, create new short URL instead
-* Parse error messages.
-* Backend tests
+* Backend tests.
+* Improve URL creation.
