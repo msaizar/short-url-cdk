@@ -11,10 +11,10 @@ client = boto3.client("dynamodb")
 
 
 @lru_cache(maxsize=10)
-def read_short_url(raw_path):
+def read_short_url(short_url):
     data = client.get_item(
         TableName=os.getenv("DYNAMODB_TABLE_NAME"),
-        Key={"ShortURL": {"S": raw_path}},
+        Key={"ShortURL": {"S": short_url}},
     )
     if "Item" in data:
         return data["Item"]["FullURL"]["S"]
@@ -44,9 +44,11 @@ def handler(event, context):
     }
 
     if event["requestContext"]["http"]["method"] == "GET":
-        short_url = read_short_url(event["rawPath"][1:])
-        if short_url:
-            response["headers"] = {"Location": short_url}
+        short_url = event["rawPath"][1:]
+        long_url = read_short_url(short_url)
+        if long_url:
+            response["headers"] = {"Location": long_url}
+            print({"action": "read", "short": short_url, "long": long_url})
 
     elif (
         event["requestContext"]["http"]["method"] == "POST"
@@ -55,7 +57,10 @@ def handler(event, context):
         success = True
         body = json.loads(event["body"])
         if "long_url" in body:
-            message = write_short_url(body["long_url"])
+            long_url = body["long_url"]
+            message = write_short_url(long_url)
+            short_url = message["short_url"]
+            print({"action": "write", "short": short_url, "long": long_url})
         else:
             success, message = False, "Missing body"
 
