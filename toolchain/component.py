@@ -68,7 +68,7 @@ class Toolchain(cdk.Stack):
             removal_policy=RemovalPolicy.RETAIN,
         )
 
-        smoke_test_commands = [f"curl ${ZONE_NAME}"]
+        smoke_test_commands = [f"curl {ZONE_NAME}"]
         smoke_test = pipelines.ShellStep(
             "SmokeTest",
             commands=smoke_test_commands,
