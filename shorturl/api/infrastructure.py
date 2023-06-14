@@ -3,6 +3,7 @@ import pathlib
 import aws_cdk.aws_apigatewayv2_alpha as apigatewayv2_alpha
 import aws_cdk.aws_apigatewayv2_integrations_alpha as apigatewayv2_integrations_alpha
 import aws_cdk.aws_lambda as lambda_
+import aws_cdk.aws_logs as logs
 
 from aws_cdk import Duration
 from constructs import Construct
@@ -30,6 +31,7 @@ class API(Construct):
             reserved_concurrent_executions=lambda_reserved_concurrency,
             handler="index.handler",
             timeout=Duration.seconds(1),
+            log_retention=logs.RetentionDays.ONE_MONTH,
         )
 
         api_gateway_http_lambda_integration = (
